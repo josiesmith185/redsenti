@@ -1,0 +1,33 @@
+import { Constants, Box, Container } from './constants';
+import { InfoBox, SquareBox, RectangleBox, ButtonBox } from './info-box';
+
+let sentiment = require('sentiment');
+
+let RedditSA = (function () {
+  let threadComments;
+  let goodScore; //positive
+  let badScore; //negative
+  let inProgress;
+  let infoBoxes;
+
+  let init = () => {
+    threadComments = [];
+    goodScore = 0;
+    badScore = 0;
+    inProgress = false;
+
+    Object.keys(infoBoxes).forEach(box => {
+      infoBoxes[box].generateHtmlAndCss();
+    });
+
+    loadActions();
+  }
+
+  let loadBoxes = (boxes) => {
+    infoBoxes = boxes;
+  }
+
+  let getData = function (url = Constants.RandomUrl, isRandomReload = false) {
+    if (inProgress) {
+      return;
+    }
